@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 
 The motivation behind the project was to provide a quick way
  to build and run basic elements of GeoWave without all the baggage

@@ -38,7 +38,7 @@ If you are using a different IDE then you can create your own run configurations
 
 ## Exercises and Important Classes
 
-You can set breakpoints at the classes mentioned below to learn how ingestion work.
+You can set breakpoints at the classes mentioned below to learn how the ingestion process works.
 
 * `org.locationtech.geowave.core.ingest.operations.LocalToGeowaveCommand` class is responsible for ingestion
 data from the local file system, S3, or HDFS. See `geowave help ingest` or `geowave help ingest localtogw`
@@ -54,10 +54,46 @@ for more information.
  `GeoWaveData` represents `SimpleFeature` one row of data read from a zip ingested file.
  The writer used here is selected based on adapterId and specified index. When you ingest GDELT data
  you will discover that `IndexCompositeWriter` is used to write the data to the storage. 
+ 
 
 
+## Notes
+Q: Where the GeoWave configuration file is stored?
 
+A: It is stored in the user's directory `~/.geowave/${project.parent.version}-config.properties`.
+This is where for example information about REDIS and GDELT is stored:
+```
+store.default-redis.opts.address=redis\://127.0.0.1\:6379
+store.default-redis.opts.gwNamespace=geowave.default
+store.default-redis.type=redis
+store.default-rocksdb.opts.gwNamespace=default
+store.default-rocksdb.type=rocksdb
+store.gdelt.opts.address=redis\://127.0.0.1\:6379
+store.gdelt.opts.aggregationMaxRangeDecomposition=-2147483648
+store.gdelt.opts.compression=SNAPPY
+store.gdelt.opts.dataIndexBatchSize=-2147483648
+store.gdelt.opts.enableBlockCache=true
+store.gdelt.opts.enableSecondaryIndexing=false
+store.gdelt.opts.enableServerSideLibrary=true
+store.gdelt.opts.gwNamespace=geowave.gdelt
+store.gdelt.opts.maxRangeDecomposition=-2147483648
+store.gdelt.opts.persistDataStatistics=true
+store.gdelt.type=redis
+```
+---
+Q: What is the purpose of ${project.parent.version}-config.properties.key configuration file?
 
+A:  
 
+---
+Q: Which driver is used to ingest data?
 
+A: `org.locationtech.geowave.core.ingest.local.LocalFileIngestCLIDriver.LocalFileIngestCLIDriver`
 
+--- 
+Q: How can I speed up the data ingestion?
+
+A: Number of ingestion threads can be increased with `-t, --threads` parameter.\
+The thread pool is created at `org.locationtech.geowave.core.store.ingest.AbstractLocalFileIngestDriver.startExecutor`
+
+---
